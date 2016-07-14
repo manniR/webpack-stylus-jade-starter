@@ -3,6 +3,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var stylus = require('stylus');
 var nib = require('nib');
 var autoprefixer = require('autoprefixer');
+var poststylus = require('poststylus');
 // var stylusLoader = ExtractTextPlugin.extract("style-loader", "css-loader!stylus-loader");
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 //var jade = require("jade");
@@ -21,7 +22,9 @@ module.exports = {
     module:{
     	loaders:[	
             { test: /\.styl$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader!postcss?pack=cleaner!stylus-loader")},
-            { include: /\.pug/, loader: "pug-html-loader" }
+            // {test: /\.(png|jpg|woff|woff2|eot|ttf|otf)/, loader: 'url-loader'},
+             { test: /\.pug$/, loader: 'pug-static' }
+            // { test: /\.pug/, loader: "pug-html-loader" }
     	]
 
     },
@@ -32,7 +35,7 @@ module.exports = {
 		new webpack.optimize.UglifyJsPlugin({ mangle: false, sourcemap: false }),
     ],
   	stylus:{
-  		use: [nib()]
+  		use: [nib(), poststylus('lost')]
   	},
     postcss: function () {
         return {
